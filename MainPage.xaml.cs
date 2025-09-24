@@ -2,24 +2,41 @@
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void Button_Clicked(object sender, EventArgs e)
         {
-            count++;
+            try
+            {
+                double etanol = Convert.ToDouble(txt_etanol.Text);
+                double gasolina = Convert.ToDouble(txt_gasolina.Text);
+                string mensagem = string.Empty;
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+                if (etanol <= 0 || gasolina <= 0)
+                {
+                    DisplayAlert("Atenção", "Por favor, insira valores maiores que zero.", "Fechar");
+                    return;
+                }
+
+                if (etanol <= (gasolina * 0.7))
+                {
+                    mensagem = "O etanol é a melhor opção.";
+                }
+                else
+                {
+                    mensagem = "A gasolina é a melhor opção.";
+                }
+
+                DisplayAlert("Resultado", mensagem, "OK");
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Opa rs", $"Tivemos um erro: {ex.Message}", "Fechar");
+            }
         }
     }
-
 }
